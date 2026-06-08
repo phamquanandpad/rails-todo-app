@@ -1,0 +1,35 @@
+alice_pending:
+  id: 1
+  user_id: 1
+  task: Buy groceries
+  description: Milk, eggs, bread
+  status: 0
+
+alice_in_progress:
+  id: 2
+  user_id: 1
+  task: Write report
+  description: Q1 report
+  status: 1
+
+alice_completed:
+  id: 3
+  user_id: 1
+  task: Call dentist
+  description: Schedule appointment
+  status: 2
+
+bob_todo:
+  id: 4
+  user_id: 2
+  task: Bob task
+  description: Something
+  status: 0
+
+alice_deleted:
+  id: 5
+  user_id: 1
+  task: Deleted task
+  description: This is soft deleted
+  status: 0
+  deleted_at: 2026-01-01 00:00:00

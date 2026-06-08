@@ -1,0 +1,71 @@
+alice_todos_index:
+  user_id: 1
+  permission_id: 1
+
+alice_todos_show:
+  user_id: 1
+  permission_id: 2
+
+alice_todos_create:
+  user_id: 1
+  permission_id: 3
+
+alice_todos_update:
+  user_id: 1
+  permission_id: 4
+
+alice_todos_destroy:
+  user_id: 1
+  permission_id: 5
+
+alice_todos_complete:
+  user_id: 1
+  permission_id: 6
+
+alice_users_show:
+  user_id: 1
+  permission_id: 7
+
+alice_users_update:
+  user_id: 1
+  permission_id: 8
+
+alice_users_destroy:
+  user_id: 1
+  permission_id: 9
+
+bob_todos_index:
+  user_id: 2
+  permission_id: 1
+
+bob_todos_show:
+  user_id: 2
+  permission_id: 2
+
+bob_todos_create:
+  user_id: 2
+  permission_id: 3
+
+bob_todos_update:
+  user_id: 2
+  permission_id: 4
+
+bob_todos_destroy:
+  user_id: 2
+  permission_id: 5
+
+bob_todos_complete:
+  user_id: 2
+  permission_id: 6
+
+bob_users_show:
+  user_id: 2
+  permission_id: 7
+
+bob_users_update:
+  user_id: 2
+  permission_id: 8
+
+bob_users_destroy:
+  user_id: 2
+  permission_id: 9
