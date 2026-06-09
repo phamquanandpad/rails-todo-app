@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::API
+  include Pagy::Backend
   include ErrorHandling
 
   before_action :authenticate_request!

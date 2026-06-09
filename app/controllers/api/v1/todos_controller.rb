@@ -4,7 +4,8 @@ class Api::V1::TodosController < ApplicationController
   before_action -> { authorize!(@todo) }, only: [ :show, :update, :destroy ]
 
   def index
-    @todos = TodosQuery.new(scope).call(filter_params)
+    todos = TodosQuery.new(scope).call(filter_params)
+    @pagy, @todos = pagy(todos, limit: params[:limit])
   end
 
   def show
