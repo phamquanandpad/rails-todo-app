@@ -22,10 +22,8 @@ class User < ApplicationRecord
   end
 
   def soft_delete!
-    transaction do
-      todos.active.update_all(deleted_at: Time.current)
-      update!(deleted_at: Time.current)
-    end
+    update!(deleted_at: Time.current)
+    SoftDeleteUserTodosJob.perform_later(id)
   end
 
   def active?
