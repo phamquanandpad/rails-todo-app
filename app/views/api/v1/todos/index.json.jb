@@ -1,11 +1,19 @@
-@todos.map do |todo|
-  {
-    id:          todo.id,
-    task:        todo.task,
-    description: todo.description,
-    status:      todo.status,
-    userId:      todo.user_id,
-    createdAt:   todo.created_at,
-    updatedAt:   todo.updated_at
+{
+  data: @todos.map { |todo|
+    {
+      id:          todo.id,
+      task:        todo.task,
+      description: todo.description,
+      status:      todo.status,
+      userId:      todo.user_id,
+      createdAt:   todo.created_at,
+      updatedAt:   todo.updated_at
+    }
+  },
+  meta: {
+    page:       @pagy.page,
+    limit:      @pagy.limit,
+    totalPages: @pagy.pages,
+    totalCount: @pagy.count
   }
-end
+}

@@ -6,7 +6,6 @@ class TodosQuery
   def call(params = {})
     result = @scope
     result = result.where(status: params[:status]) if params[:status].present?
-    result = result.order(created_at: :desc)
-    result
+    result.order(created_at: :desc, id: :desc)
   end
 end

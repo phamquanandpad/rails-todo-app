@@ -20,7 +20,7 @@ RSpec.describe "Todos", type: :request do
       get "/api/v1/todos", headers: user_headers, as: :json
 
       expect(response).to have_http_status(:ok)
-      ids = response.parsed_body.map { _1["id"] }
+      ids = response.parsed_body["data"].map { _1["id"] }
       expect(ids).to include(user_pending.id)
       expect(ids).not_to include(user_deleted.id)
       expect(ids).not_to include(norole_todo.id)
@@ -30,12 +30,42 @@ RSpec.describe "Todos", type: :request do
       get "/api/v1/todos?status=pending", headers: user_headers, as: :json
 
       expect(response).to have_http_status(:ok)
-      expect(response.parsed_body.all? { _1["status"] == "pending" }).to be true
+      expect(response.parsed_body["data"].all? { _1["status"] == "pending" }).to be true
     end
 
     it "requires authentication" do
       get "/api/v1/todos", as: :json
       expect(response).to have_http_status(:unauthorized)
+    end
+
+    context "pagination" do
+      let!(:todos) { create_list(:todo, 3, user: user) }
+
+      it "returns meta with pagination info" do
+        get "/api/v1/todos", headers: user_headers, as: :json
+
+        meta = response.parsed_body["meta"]
+        expect(meta["page"]).to eq(1)
+        expect(meta["limit"]).to eq(20)
+        expect(meta["totalPages"]).to eq(1)
+        expect(meta["totalCount"]).to eq(4)
+      end
+
+      it "paginates results with limit and page" do
+        get "/api/v1/todos?limit=2&page=1", headers: user_headers, as: :json
+
+        body = response.parsed_body
+        expect(body["data"].size).to eq(2)
+        expect(body["meta"]["totalPages"]).to eq(2)
+      end
+
+      it "returns the second page" do
+        get "/api/v1/todos?limit=2&page=2", headers: user_headers, as: :json
+
+        body = response.parsed_body
+        expect(body["data"].size).to eq(2)
+        expect(body["meta"]["page"]).to eq(2)
+      end
     end
   end
 
