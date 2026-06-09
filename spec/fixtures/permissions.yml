@@ -1,0 +1,35 @@
+todos_index:
+  id: 1
+  name: "todos:index"
+
+todos_show:
+  id: 2
+  name: "todos:show"
+
+todos_create:
+  id: 3
+  name: "todos:create"
+
+todos_update:
+  id: 4
+  name: "todos:update"
+
+todos_destroy:
+  id: 5
+  name: "todos:destroy"
+
+todos_complete:
+  id: 6
+  name: "todos:complete"
+
+users_show:
+  id: 7
+  name: "users:show"
+
+users_update:
+  id: 8
+  name: "users:update"
+
+users_destroy:
+  id: 9
+  name: "users:destroy"

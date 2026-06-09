@@ -2,20 +2,27 @@ source "https://rubygems.org"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.2.3"
-# Use sqlite3 as the database for Active Record
-gem "sqlite3", ">= 1.4"
+# Use MySQL as the database for Active Record
+gem "mysql2", "~> 0.5"
+
+# Load environment variables from .env
+gem "dotenv-rails", groups: [ :development, :test ]
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
-# gem "jbuilder"
+gem "jbuilder"
+gem "jb"
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
 
-# Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
-# gem "bcrypt", "~> 3.1.7"
+# Use Active Model has_secure_password
+gem "bcrypt", "~> 3.1.7"
+
+# JWT for stateless authentication
+gem "jwt", "~> 2.8"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
@@ -38,4 +45,15 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+
+  gem "rspec-rails", "~> 7.0"
+
+  gem "factory_bot_rails", "~> 6.0"
+
+  gem "faker"
+end
+
+group :development do
+  gem "ruby-lsp", "~> 0.26.9"
+  gem "ruby-lsp-rspec", require: false
 end

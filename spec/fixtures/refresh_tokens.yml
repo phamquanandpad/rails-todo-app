@@ -1,0 +1,18 @@
+alice_valid_token:
+  id: 1
+  user_id: 1
+  token: validtoken_alice_abc123
+  expires_at: <%= 7.days.from_now %>
+
+alice_expired_token:
+  id: 2
+  user_id: 1
+  token: expiredtoken_alice_xyz789
+  expires_at: 2026-01-01 00:00:00
+
+alice_revoked_token:
+  id: 3
+  user_id: 1
+  token: revokedtoken_alice_def456
+  expires_at: <%= 7.days.from_now %>
+  deleted_at: 2026-01-01 00:00:00
