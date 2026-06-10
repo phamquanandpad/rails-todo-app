@@ -1,0 +1,5 @@
+purge_soft_deleted_records:
+  cron: "0 3 * * *"
+  class: "PurgeSoftDeletedRecordsJob"
+  queue: low
+  description: "Archive and hard-delete records soft-deleted >= 30 days ago"

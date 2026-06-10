@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_10_000001) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_10_000002) do
   create_table "archived_todos", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.datetime "archived_at", null: false
     t.datetime "created_at", null: false
@@ -24,7 +24,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_10_000001) do
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.index ["archived_at"], name: "index_archived_todos_on_archived_at"
-    t.index ["original_id"], name: "index_archived_todos_on_original_id"
+    t.index ["original_id"], name: "index_archived_todos_on_original_id", unique: true
     t.index ["user_id"], name: "index_archived_todos_on_user_id"
   end
 
@@ -41,7 +41,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_10_000001) do
     t.datetime "updated_at", null: false
     t.string "username", null: false
     t.index ["archived_at"], name: "index_archived_users_on_archived_at"
-    t.index ["original_id"], name: "index_archived_users_on_original_id"
+    t.index ["original_id"], name: "index_archived_users_on_original_id", unique: true
   end
 
   create_table "permissions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|

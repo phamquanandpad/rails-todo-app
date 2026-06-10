@@ -34,3 +34,9 @@
 
 # Ignore node modules
 node_modules
+
+docs
+
+ARCHITECTURE.md
+
+CLAUDE.md
