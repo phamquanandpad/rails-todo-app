@@ -1,7 +1,8 @@
 class Api::V1::TodosController < ApplicationController
-  before_action :authorize_todo_collection!, only: [ :index, :create ]
+  before_action :authorize_todo_collection!, only: [ :index, :create, :deleted ]
   before_action :set_todo, only: [ :show, :update, :destroy ]
-  before_action -> { authorize!(@todo) }, only: [ :show, :update, :destroy ]
+  before_action :set_deleted_todo, only: [ :restore ]
+  before_action -> { authorize!(@todo) }, only: [ :show, :update, :destroy, :restore ]
 
   def index
     todos = TodosQuery.new(scope).call(filter_params)
@@ -27,6 +28,17 @@ class Api::V1::TodosController < ApplicationController
     head :no_content
   end
 
+  def deleted
+    todos = TodosQuery.new(current_user.todos.deleted).call(filter_params)
+    @pagy, @todos = pagy(todos, limit: params[:limit])
+    render :index
+  end
+
+  def restore
+    @todo.restore!
+    render :show
+  end
+
   private
 
   def scope
@@ -35,6 +47,10 @@ class Api::V1::TodosController < ApplicationController
 
   def set_todo
     @todo = scope.find(params[:id])
+  end
+
+  def set_deleted_todo
+    @todo = current_user.todos.deleted.find(params[:id])
   end
 
   def authorize_todo_collection!

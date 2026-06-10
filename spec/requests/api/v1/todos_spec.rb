@@ -154,4 +154,74 @@ RSpec.describe "Todos", type: :request do
       expect(response).to have_http_status(:not_found)
     end
   end
+
+  describe "GET /api/v1/todos/deleted" do
+    let!(:deleted_todo)  { create(:todo, :soft_deleted, user: user) }
+    let!(:active_todo)   { create(:todo, user: user) }
+    let!(:other_deleted) { create(:todo, :soft_deleted, user: norole) }
+
+    it "returns current user's soft-deleted todos" do
+      get "/api/v1/todos/deleted", headers: user_headers, as: :json
+
+      expect(response).to have_http_status(:ok)
+      ids = response.parsed_body["data"].map { _1["id"] }
+      expect(ids).to include(deleted_todo.id)
+      expect(ids).not_to include(active_todo.id)
+      expect(ids).not_to include(other_deleted.id)
+      assert_schema_conform(200)
+    end
+
+    it "includes pagination meta" do
+      get "/api/v1/todos/deleted", headers: user_headers, as: :json
+
+      meta = response.parsed_body["meta"]
+      expect(meta).to include("page", "limit", "totalPages", "totalCount")
+    end
+
+    it "requires authentication" do
+      get "/api/v1/todos/deleted", as: :json
+      expect(response).to have_http_status(:unauthorized)
+    end
+
+    it "forbids a user without the todos:deleted permission" do
+      get "/api/v1/todos/deleted", headers: norole_headers, as: :json
+      expect(response).to have_http_status(:forbidden)
+    end
+  end
+
+  describe "PATCH /api/v1/todos/:id/restore" do
+    let!(:deleted_todo)  { create(:todo, :soft_deleted, user: user) }
+    let!(:active_todo)   { create(:todo, user: user) }
+    let!(:other_deleted) { create(:todo, :soft_deleted, user: norole) }
+
+    it "restores a soft-deleted todo" do
+      patch "/api/v1/todos/#{deleted_todo.id}/restore", headers: user_headers, as: :json
+
+      expect(response).to have_http_status(:ok)
+      expect(response.parsed_body["id"]).to eq(deleted_todo.id)
+      expect(deleted_todo.reload.deleted_at).to be_nil
+      assert_schema_conform(200)
+    end
+
+    it "returns 404 for an active todo" do
+      patch "/api/v1/todos/#{active_todo.id}/restore", headers: user_headers, as: :json
+      expect(response).to have_http_status(:not_found)
+    end
+
+    it "returns 404 for another user's deleted todo" do
+      patch "/api/v1/todos/#{other_deleted.id}/restore", headers: user_headers, as: :json
+      expect(response).to have_http_status(:not_found)
+    end
+
+    it "requires authentication" do
+      patch "/api/v1/todos/#{deleted_todo.id}/restore", as: :json
+      expect(response).to have_http_status(:unauthorized)
+    end
+
+    it "forbids a user without the todos:restore permission" do
+      norole_todo = create(:todo, :soft_deleted, user: norole)
+      patch "/api/v1/todos/#{norole_todo.id}/restore", headers: norole_headers, as: :json
+      expect(response).to have_http_status(:forbidden)
+    end
+  end
 end

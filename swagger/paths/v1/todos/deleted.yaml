@@ -1,0 +1,29 @@
+get:
+  summary: List restorable (soft-deleted) todos
+  description: >-
+    Returns the current user's todos that are soft-deleted but have not yet been
+    purged into the archive table. These are the todos that can be restored via
+    `PATCH /api/v1/todos/{id}/restore`.
+  operationId: get-todos-deleted
+  tags: [todo]
+  security:
+    - bearerAuth: []
+  parameters:
+    - $ref: '#/components/parameters/page'
+    - $ref: '#/components/parameters/limit'
+  responses:
+    '200':
+      description: Deleted todos listed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Todo'
+              meta:
+                $ref: '#/components/schemas/PaginationMeta'
+    '401':
+      $ref: '#/components/responses/Unauthorized'

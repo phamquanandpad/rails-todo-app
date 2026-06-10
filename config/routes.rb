@@ -12,7 +12,14 @@ Rails.application.routes.draw do
 
       resources :users, only: [:show, :update, :destroy]
 
-      resources :todos
+      resources :todos do
+        collection do
+          get :deleted
+        end
+        member do
+          patch :restore
+        end
+      end
     end
   end
 end

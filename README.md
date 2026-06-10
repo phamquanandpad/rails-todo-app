@@ -14,6 +14,10 @@ Things you may want to cover:
 * Database creation
 
 * Database initialization
+- Seed data
+bin/rails db:seed
+- Regrant permissions (if any new permission)
+bin/rails permissions:sync
 
 * How to run the test suite
 
