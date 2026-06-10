@@ -1,11 +1,15 @@
 delete:
   summary: Logout
+  description: >
+    Revokes the refresh token and clears the `refresh_token` HttpOnly
+    cookie. The token can be supplied as the `refreshToken` body field
+    **or** read automatically from the cookie.
   operationId: delete-auth-logout
   tags: [auth]
   security:
     - bearerAuth: []
   requestBody:
-    required: true
+    required: false
     content:
       application/json:
         schema:
@@ -13,7 +17,7 @@ delete:
           properties:
             refreshToken:
               type: string
-          required: [refreshToken]
+              description: Optional if the HttpOnly refresh_token cookie is present.
   responses:
     '204':
       description: Logged out

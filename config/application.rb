@@ -29,6 +29,10 @@ module TodoApp
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
 
+    # Re-add cookie middleware (stripped out by api_only = true)
+    config.middleware.use ActionDispatch::Cookies
+    config.middleware.use ActionDispatch::Session::CookieStore
+
     # Use Sidekiq as the Active Job queue adapter
     config.active_job.queue_adapter = :sidekiq
   end

@@ -1,5 +1,9 @@
 post:
   summary: Login
+  description: >
+    Authenticates the user and returns a short-lived access token in the
+    response body. A long-lived refresh token is set as an HttpOnly signed
+    cookie (`refresh_token`) and is **not** included in the response body.
   operationId: post-auth-login
   tags: [auth]
   requestBody:
@@ -20,7 +24,7 @@ post:
           required: [email, password]
   responses:
     '200':
-      description: Login successful
+      description: Login successful. Refresh token set as HttpOnly cookie.
       content:
         application/json:
           schema:
@@ -34,8 +38,6 @@ post:
                   email:
                     type: string
               accessToken:
-                type: string
-              refreshToken:
                 type: string
     '401':
       $ref: '#/components/responses/Unauthorized'

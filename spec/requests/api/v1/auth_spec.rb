@@ -39,7 +39,6 @@ RSpec.describe "Auth", type: :request do
       expect(response).to have_http_status(:ok)
       body = response.parsed_body
       expect(body).to have_key("accessToken")
-      expect(body).to have_key("refreshToken")
       assert_schema_conform(200)
     end
 
@@ -64,7 +63,6 @@ RSpec.describe "Auth", type: :request do
       expect(response).to have_http_status(:ok)
       body = response.parsed_body
       expect(body).to have_key("accessToken")
-      expect(body).to have_key("refreshToken")
       assert_schema_conform(200)
     end
 

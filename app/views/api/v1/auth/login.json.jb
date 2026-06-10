@@ -3,6 +3,5 @@
     username: @user[:username],
     email:    @user[:email]
   },
-  accessToken:  @access_token,
-  refreshToken: @refresh_token
+  accessToken: @access_token
 }

@@ -1,9 +1,15 @@
 post:
   summary: Refresh access token
+  description: >
+    Exchange a refresh token for a new access token. The refresh token can
+    be supplied either as the `refreshToken` body field **or** via the
+    `refresh_token` HttpOnly signed cookie set by `/auth/login`. The new
+    refresh token is always returned as an HttpOnly cookie; it is **not**
+    included in the response body.
   operationId: post-auth-refresh
   tags: [auth]
   requestBody:
-    required: true
+    required: false
     content:
       application/json:
         schema:
@@ -11,18 +17,16 @@ post:
           properties:
             refreshToken:
               type: string
-          required: [refreshToken]
+              description: Optional if the HttpOnly refresh_token cookie is present.
   responses:
     '200':
-      description: Tokens refreshed
+      description: Token refreshed. New refresh token set as HttpOnly cookie.
       content:
         application/json:
           schema:
             type: object
             properties:
               accessToken:
-                type: string
-              refreshToken:
                 type: string
     '401':
       $ref: '#/components/responses/Unauthorized'

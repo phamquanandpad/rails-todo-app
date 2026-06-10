@@ -57,6 +57,10 @@ paths:
   /api/v1/auth/login:
     post:
       summary: Login
+      description: >
+        Authenticates the user and returns a short-lived access token in the
+        response body. A long-lived refresh token is set as an HttpOnly signed
+        cookie (`refresh_token`) and is **not** included in the response body.
       operationId: post-auth-login
       tags:
         - auth
@@ -80,7 +84,7 @@ paths:
                 - password
       responses:
         '200':
-          description: Login successful
+          description: Login successful. Refresh token set as HttpOnly cookie.
           content:
             application/json:
               schema:
@@ -95,18 +99,22 @@ paths:
                         type: string
                   accessToken:
                     type: string
-                  refreshToken:
-                    type: string
         '401':
           $ref: '#/components/responses/Unauthorized'
   /api/v1/auth/refresh:
     post:
       summary: Refresh access token
+      description: >
+        Exchange a refresh token for a new access token. The refresh token can
+        be supplied either as the `refreshToken` body field **or** via the
+        `refresh_token` HttpOnly signed cookie set by `/auth/login`. The new
+        refresh token is always returned as an HttpOnly cookie; it is **not**
+        included in the response body.
       operationId: post-auth-refresh
       tags:
         - auth
       requestBody:
-        required: true
+        required: false
         content:
           application/json:
             schema:
@@ -114,11 +122,10 @@ paths:
               properties:
                 refreshToken:
                   type: string
-              required:
-                - refreshToken
+                  description: Optional if the HttpOnly refresh_token cookie is present.
       responses:
         '200':
-          description: Tokens refreshed
+          description: Token refreshed. New refresh token set as HttpOnly cookie.
           content:
             application/json:
               schema:
@@ -126,20 +133,22 @@ paths:
                 properties:
                   accessToken:
                     type: string
-                  refreshToken:
-                    type: string
         '401':
           $ref: '#/components/responses/Unauthorized'
   /api/v1/auth/logout:
     delete:
       summary: Logout
+      description: >
+        Revokes the refresh token and clears the `refresh_token` HttpOnly
+        cookie. The token can be supplied as the `refreshToken` body field
+        **or** read automatically from the cookie.
       operationId: delete-auth-logout
       tags:
         - auth
       security:
         - bearerAuth: []
       requestBody:
-        required: true
+        required: false
         content:
           application/json:
             schema:
@@ -147,8 +156,7 @@ paths:
               properties:
                 refreshToken:
                   type: string
-              required:
-                - refreshToken
+                  description: Optional if the HttpOnly refresh_token cookie is present.
       responses:
         '204':
           description: Logged out
