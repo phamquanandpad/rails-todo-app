@@ -1,0 +1,25 @@
+components:
+  schemas:
+    Todo:
+      title: Todo
+      type: object
+      properties:
+        id:
+          type: integer
+        task:
+          type: string
+        description:
+          type: string
+          nullable: true
+        status:
+          type: string
+          enum: [pending, in_progress, completed]
+        userId:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required: [id, task, status, userId, createdAt, updatedAt]

@@ -16,6 +16,7 @@ RSpec.describe "Auth", type: :request do
       expect(response).to have_http_status(:created)
       expect(response.parsed_body["username"]).to eq("newuser")
       expect(response.parsed_body["email"]).to eq("newuser@example.com")
+      assert_schema_conform(201)
     end
 
     it "fails with invalid params" do
@@ -39,6 +40,7 @@ RSpec.describe "Auth", type: :request do
       body = response.parsed_body
       expect(body).to have_key("accessToken")
       expect(body).to have_key("refreshToken")
+      assert_schema_conform(200)
     end
 
     it "fails with wrong password" do
@@ -63,6 +65,7 @@ RSpec.describe "Auth", type: :request do
       body = response.parsed_body
       expect(body).to have_key("accessToken")
       expect(body).to have_key("refreshToken")
+      assert_schema_conform(200)
     end
 
     it "fails with invalid token" do

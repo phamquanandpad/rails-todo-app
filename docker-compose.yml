@@ -44,6 +44,24 @@ services:
     volumes:
       - .:/rails
 
+  swagger-merger:
+    build:
+      context: ./swagger
+    working_dir: /swagger
+    volumes:
+      - ./swagger:/swagger
+
+  swagger:
+    image: redocly/redoc
+    volumes:
+      - ./swagger:/usr/share/nginx/html/swagger
+    environment:
+      SPEC_URL: swagger/merged/v1.yaml
+    ports:
+      - "8031:80"
+    depends_on:
+      - swagger-merger
+
 volumes:
   mysql_data:
   redis_data:

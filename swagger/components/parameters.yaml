@@ -1,0 +1,25 @@
+components:
+  parameters:
+    page:
+      name: page
+      in: query
+      description: Page number
+      schema:
+        type: integer
+        default: 1
+
+    limit:
+      name: limit
+      in: query
+      description: Items per page
+      schema:
+        type: integer
+        default: 20
+
+    status:
+      name: status
+      in: query
+      description: Filter by todo status
+      schema:
+        type: string
+        enum: [pending, in_progress, completed]

@@ -1,0 +1,21 @@
+apis:
+  v1:
+    root: swagger/merged/v1.yaml
+
+extends:
+  - recommended
+
+rules:
+  path-parameters-defined: off
+  security-defined: off
+  info-license: off
+
+  # Enforce camelCase for all query/body parameter names
+  rule/camelCase-parameters:
+    subject:
+      type: Parameter
+      property: name
+    assertions:
+      casing: camelCase
+    message: Parameter names must be camelCase
+    severity: error

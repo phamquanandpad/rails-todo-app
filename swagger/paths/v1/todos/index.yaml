@@ -1,0 +1,63 @@
+get:
+  summary: List todos
+  operationId: get-todos
+  tags: [todo]
+  security:
+    - bearerAuth: []
+  parameters:
+    - $ref: '#/components/parameters/status'
+    - $ref: '#/components/parameters/page'
+    - $ref: '#/components/parameters/limit'
+  responses:
+    '200':
+      description: Todos listed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Todo'
+              meta:
+                $ref: '#/components/schemas/PaginationMeta'
+    '401':
+      $ref: '#/components/responses/Unauthorized'
+
+post:
+  summary: Create a todo
+  operationId: post-todos
+  tags: [todo]
+  security:
+    - bearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            task:
+              type: string
+              example: Buy groceries
+            description:
+              type: string
+              nullable: true
+              example: Milk, eggs, bread
+            status:
+              type: string
+              enum: [pending, in_progress, completed]
+              example: pending
+          required: [task]
+  responses:
+    '201':
+      description: Todo created
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Todo'
+    '422':
+      $ref: '#/components/responses/UnprocessableEntity'
+    '401':
+      $ref: '#/components/responses/Unauthorized'
