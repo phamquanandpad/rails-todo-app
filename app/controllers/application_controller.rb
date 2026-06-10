@@ -2,10 +2,15 @@ class ApplicationController < ActionController::API
   include Pagy::Backend
   include ErrorHandling
 
+  before_action :set_json_format
   before_action :authenticate_request!
   before_action :snakeize_params
 
   private
+
+  def set_json_format
+    request.format = :json
+  end
 
   def authenticate_request!
     payload = Auth::JwtService.decode(bearer_token)
