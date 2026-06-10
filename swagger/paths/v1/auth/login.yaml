@@ -1,0 +1,41 @@
+post:
+  summary: Login
+  operationId: post-auth-login
+  tags: [auth]
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            email:
+              type: string
+              format: email
+              example: john@example.com
+            password:
+              type: string
+              format: password
+              example: secret123
+          required: [email, password]
+  responses:
+    '200':
+      description: Login successful
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              user:
+                type: object
+                properties:
+                  username:
+                    type: string
+                  email:
+                    type: string
+              accessToken:
+                type: string
+              refreshToken:
+                type: string
+    '401':
+      $ref: '#/components/responses/Unauthorized'

@@ -1,0 +1,41 @@
+post:
+  summary: Register a new user
+  operationId: post-auth-register
+  tags: [auth]
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            username:
+              type: string
+              example: john_doe
+            email:
+              type: string
+              format: email
+              example: john@example.com
+            password:
+              type: string
+              format: password
+              example: secret123
+            password_confirmation:
+              type: string
+              format: password
+              example: secret123
+          required: [username, email, password, password_confirmation]
+  responses:
+    '201':
+      description: User registered
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              username:
+                type: string
+              email:
+                type: string
+    '422':
+      $ref: '#/components/responses/UnprocessableEntity'

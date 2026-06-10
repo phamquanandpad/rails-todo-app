@@ -24,6 +24,7 @@ RSpec.describe "Todos", type: :request do
       expect(ids).to include(user_pending.id)
       expect(ids).not_to include(user_deleted.id)
       expect(ids).not_to include(norole_todo.id)
+      assert_schema_conform(200)
     end
 
     it "filters by status" do
@@ -79,6 +80,7 @@ RSpec.describe "Todos", type: :request do
 
       expect(response).to have_http_status(:ok)
       expect(response.parsed_body["task"]).to eq(user_todo.task)
+      assert_schema_conform(200)
     end
 
     it "returns 404 for another user's todo" do
@@ -101,6 +103,7 @@ RSpec.describe "Todos", type: :request do
       expect(response).to have_http_status(:created)
       expect(response.parsed_body["task"]).to eq("New task")
       expect(response.parsed_body["status"]).to eq("pending")
+      assert_schema_conform(201)
     end
 
     it "fails with missing task" do
@@ -123,6 +126,7 @@ RSpec.describe "Todos", type: :request do
 
       expect(response).to have_http_status(:ok)
       expect(response.parsed_body["task"]).to eq("Updated task")
+      assert_schema_conform(200)
     end
 
     it "returns 404 for another user's todo" do

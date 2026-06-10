@@ -1,0 +1,13 @@
+{
+  "name": "swagger",
+  "private": true,
+  "scripts": {
+    "merge": "swagger-merger --debug -i ./reference/v1.yaml -o ./merged/v1.yaml",
+    "watch": "gulp"
+  },
+  "dependencies": {
+    "swagger-merger": "^1.5.4",
+    "gulp": "^5.0.0",
+    "js-yaml": "^4.1.0"
+  }
+}

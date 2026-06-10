@@ -1,0 +1,58 @@
+openapi: 3.0.1
+info:
+  title: Todo API
+  version: v1
+  description: Rails 7.2 API-only todo management system
+
+servers:
+  - url: 'http://localhost:3000'
+    description: Development
+
+paths:
+  /api/v1/auth/register:
+    $ref: '../paths/v1/auth/register.yaml'
+  /api/v1/auth/login:
+    $ref: '../paths/v1/auth/login.yaml'
+  /api/v1/auth/refresh:
+    $ref: '../paths/v1/auth/refresh.yaml'
+  /api/v1/auth/logout:
+    $ref: '../paths/v1/auth/logout.yaml'
+  /api/v1/todos:
+    $ref: '../paths/v1/todos/index.yaml'
+  /api/v1/todos/{id}:
+    $ref: '../paths/v1/todos/show.yaml'
+  /api/v1/users/{id}:
+    $ref: '../paths/v1/users/show.yaml'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Todo:
+      $ref: '../components/schemas/todo.yaml#/components/schemas/Todo'
+    User:
+      $ref: '../components/schemas/user.yaml#/components/schemas/User'
+    ErrorResponse:
+      $ref: '../components/responses.yaml#/components/schemas/ErrorResponse'
+    PaginationMeta:
+      $ref: '../components/responses.yaml#/components/schemas/PaginationMeta'
+
+  parameters:
+    page:
+      $ref: '../components/parameters.yaml#/components/parameters/page'
+    limit:
+      $ref: '../components/parameters.yaml#/components/parameters/limit'
+    status:
+      $ref: '../components/parameters.yaml#/components/parameters/status'
+
+  responses:
+    Unauthorized:
+      $ref: '../components/responses.yaml#/components/responses/Unauthorized'
+    NotFound:
+      $ref: '../components/responses.yaml#/components/responses/NotFound'
+    UnprocessableEntity:
+      $ref: '../components/responses.yaml#/components/responses/UnprocessableEntity'

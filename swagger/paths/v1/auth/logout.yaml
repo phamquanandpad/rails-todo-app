@@ -1,0 +1,21 @@
+delete:
+  summary: Logout
+  operationId: delete-auth-logout
+  tags: [auth]
+  security:
+    - bearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            refreshToken:
+              type: string
+          required: [refreshToken]
+  responses:
+    '204':
+      description: Logged out
+    '401':
+      $ref: '#/components/responses/Unauthorized'

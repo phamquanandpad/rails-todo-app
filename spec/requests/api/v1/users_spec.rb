@@ -16,6 +16,7 @@ RSpec.describe "Users", type: :request do
       expect(response).to have_http_status(:ok)
       expect(response.parsed_body["username"]).to eq(user.username)
       expect(response.parsed_body["email"]).to eq(user.email)
+      assert_schema_conform(200)
     end
 
     it "requires authentication" do
@@ -32,6 +33,7 @@ RSpec.describe "Users", type: :request do
 
       expect(response).to have_http_status(:ok)
       expect(response.parsed_body["username"]).to eq("user_updated")
+      assert_schema_conform(200)
     end
 
     it "requires authentication" do
