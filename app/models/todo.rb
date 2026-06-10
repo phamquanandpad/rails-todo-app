@@ -3,7 +3,8 @@ class Todo < ApplicationRecord
 
   belongs_to :user, foreign_key: :user_id
 
-  scope :active, -> { where(deleted_at: nil) }
+  scope :active,   -> { where(deleted_at: nil) }
+  scope :deleted,  -> { where.not(deleted_at: nil) }
 
   enum :status, { pending: 0, in_progress: 1, completed: 2 }
 
@@ -14,7 +15,15 @@ class Todo < ApplicationRecord
     update!(deleted_at: Time.current)
   end
 
+  def restore!
+    update!(deleted_at: nil)
+  end
+
   def active?
     deleted_at.nil?
+  end
+
+  def deleted?
+    deleted_at.present?
   end
 end

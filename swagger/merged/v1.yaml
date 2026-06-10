@@ -223,7 +223,44 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
+  /api/v1/todos/deleted:
+    get:
+      summary: List restorable (soft-deleted) todos
+      description: >-
+        Returns the current user's todos that are soft-deleted but have not yet
+        been purged into the archive table. These are the todos that can be
+        restored via `PATCH /api/v1/todos/{id}/restore`.
+      operationId: get-todos-deleted
+      tags:
+        - todo
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/limit'
+      responses:
+        '200':
+          description: Deleted todos listed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Todo'
+                  meta:
+                    $ref: '#/components/schemas/PaginationMeta'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
   /api/v1/todos/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
     get:
       summary: Get a todo
       operationId: get-todo
@@ -294,7 +331,42 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
+  /api/v1/todos/{id}/restore:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    patch:
+      summary: Restore a soft-deleted todo
+      description: >-
+        Restores a todo that is currently soft-deleted and still present in the
+        `todos` table, clearing its `deletedAt`. Todos that have already been
+        purged into the archive table cannot be restored and return `404`.
+      operationId: patch-todo-restore
+      tags:
+        - todo
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Todo restored
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Todo'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
   /api/v1/users/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
     get:
       summary: Get current user
       operationId: get-user

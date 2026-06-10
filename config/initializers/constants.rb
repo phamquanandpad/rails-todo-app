@@ -19,6 +19,8 @@ module AppConstants
         todos:update
         todos:destroy
         todos:complete
+        todos:deleted
+        todos:restore
       ].freeze,
       member: %w[
         todos:index
@@ -27,6 +29,8 @@ module AppConstants
         todos:update
         todos:destroy
         todos:complete
+        todos:deleted
+        todos:restore
       ].freeze
     }.freeze
 

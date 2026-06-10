@@ -1,0 +1,28 @@
+parameters:
+  - name: id
+    in: path
+    required: true
+    schema:
+      type: integer
+
+patch:
+  summary: Restore a soft-deleted todo
+  description: >-
+    Restores a todo that is currently soft-deleted and still present in the
+    `todos` table, clearing its `deletedAt`. Todos that have already been purged
+    into the archive table cannot be restored and return `404`.
+  operationId: patch-todo-restore
+  tags: [todo]
+  security:
+    - bearerAuth: []
+  responses:
+    '200':
+      description: Todo restored
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Todo'
+    '404':
+      $ref: '#/components/responses/NotFound'
+    '401':
+      $ref: '#/components/responses/Unauthorized'

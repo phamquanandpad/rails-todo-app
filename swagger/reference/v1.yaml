@@ -19,8 +19,12 @@ paths:
     $ref: '../paths/v1/auth/logout.yaml'
   /api/v1/todos:
     $ref: '../paths/v1/todos/index.yaml'
+  /api/v1/todos/deleted:
+    $ref: '../paths/v1/todos/deleted.yaml'
   /api/v1/todos/{id}:
     $ref: '../paths/v1/todos/show.yaml'
+  /api/v1/todos/{id}/restore:
+    $ref: '../paths/v1/todos/restore.yaml'
   /api/v1/users/{id}:
     $ref: '../paths/v1/users/show.yaml'
 
