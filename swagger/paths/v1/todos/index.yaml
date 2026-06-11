@@ -6,6 +6,7 @@ get:
     - bearerAuth: []
   parameters:
     - $ref: '#/components/parameters/status'
+    - $ref: '#/components/parameters/overdue'
     - $ref: '#/components/parameters/page'
     - $ref: '#/components/parameters/limit'
   responses:
@@ -49,6 +50,16 @@ post:
               type: string
               enum: [pending, in_progress, completed]
               example: pending
+            estimateStartAt:
+              type: string
+              format: date
+              nullable: true
+              example: "2026-06-11"
+            estimateEndAt:
+              type: string
+              format: date
+              nullable: true
+              example: "2026-06-15"
           required: [task]
   responses:
     '201':

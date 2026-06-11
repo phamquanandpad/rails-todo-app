@@ -10,12 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_11_022935) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_11_035945) do
   create_table "archived_todos", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.datetime "archived_at", null: false
     t.datetime "created_at", null: false
     t.datetime "deleted_at"
     t.text "description"
+    t.date "estimate_end_at"
+    t.date "estimate_start_at"
     t.datetime "original_created_at"
     t.bigint "original_id", null: false
     t.datetime "original_updated_at"
@@ -80,11 +82,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_11_022935) do
     t.datetime "created_at", null: false
     t.datetime "deleted_at"
     t.text "description"
+    t.date "estimate_end_at"
+    t.date "estimate_start_at"
     t.integer "status", default: 0, null: false
     t.string "task", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.index ["deleted_at"], name: "index_todos_on_deleted_at"
+    t.index ["estimate_end_at"], name: "index_todos_on_estimate_end_at"
+    t.index ["estimate_start_at"], name: "index_todos_on_estimate_start_at"
     t.index ["user_id"], name: "index_todos_on_user_id"
   end
 

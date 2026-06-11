@@ -3,3 +3,15 @@ purge_soft_deleted_records:
   class: "PurgeSoftDeletedRecordsJob"
   queue: low
   description: "Archive and hard-delete records soft-deleted >= 30 days ago"
+
+start_estimated_todos:
+  cron: "5 0 * * *"
+  class: "StartEstimatedTodosJob"
+  queue: low
+  description: "Transition pending todos to in_progress when estimateStart hits today"
+
+remind_overdue_todos:
+  cron: "0 9 * * *"
+  class: "RemindOverdueTodosJob"
+  queue: low
+  description: "Notify owners of active todos whose estimateEnd is today or past"

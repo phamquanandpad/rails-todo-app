@@ -44,6 +44,14 @@ patch:
             status:
               type: string
               enum: [pending, in_progress, completed]
+            estimateStartAt:
+              type: string
+              format: date
+              nullable: true
+            estimateEndAt:
+              type: string
+              format: date
+              nullable: true
   responses:
     '200':
       description: Todo updated

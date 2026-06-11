@@ -35,6 +35,34 @@ RSpec.describe TodosQuery, type: :model do
       end
     end
 
+    context "when filtering by overdue" do
+      let!(:overdue_todo)    { create(:todo, user: user, estimate_end_at: Date.today - 1) }
+      let!(:due_today_todo)  { create(:todo, user: user, estimate_end_at: Date.today) }
+      let!(:future_todo)     { create(:todo, user: user, estimate_end_at: Date.today + 1) }
+      let!(:no_date_todo)    { create(:todo, user: user, estimate_end_at: nil) }
+      let!(:completed_overdue) { create(:todo, :completed, user: user, estimate_end_at: Date.today - 1) }
+
+      it "returns overdue and due-today todos when overdue=true" do
+        todos = TodosQuery.new(scope).call(overdue: "true")
+        expect(todos).to include(overdue_todo, due_today_todo)
+      end
+
+      it "excludes future and nil estimate_end_at todos" do
+        todos = TodosQuery.new(scope).call(overdue: "true")
+        expect(todos).not_to include(future_todo, no_date_todo)
+      end
+
+      it "excludes completed todos even if overdue" do
+        todos = TodosQuery.new(scope).call(overdue: "true")
+        expect(todos).not_to include(completed_overdue)
+      end
+
+      it "does not apply overdue filter when overdue=false" do
+        todos = TodosQuery.new(scope).call(overdue: "false")
+        expect(todos).to include(future_todo, no_date_todo, completed_overdue)
+      end
+    end
+
     it "excludes soft-deleted todos" do
       active_ids = TodosQuery.new(scope).call.pluck(:id)
       deleted_id = user.todos.where.not(deleted_at: nil).pick(:id)

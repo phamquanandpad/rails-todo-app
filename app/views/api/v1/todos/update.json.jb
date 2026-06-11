@@ -1,9 +1,11 @@
 {
-  id:          @todo.id,
-  task:        @todo.task,
-  description: @todo.description,
-  status:      @todo.status,
-  userId:      @todo.user_id,
-  createdAt:   @todo.created_at,
-  updatedAt:   @todo.updated_at
+  id:              @todo.id,
+  task:            @todo.task,
+  description:     @todo.description,
+  status:          @todo.status,
+  userId:          @todo.user_id,
+  estimateStartAt: @todo.estimate_start_at,
+  estimateEndAt:   @todo.estimate_end_at,
+  createdAt:       @todo.created_at,
+  updatedAt:       @todo.updated_at
 }

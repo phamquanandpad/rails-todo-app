@@ -39,6 +39,17 @@ RSpec.describe Maintenance::PurgeTodosService do
         expect(archived.deleted_at).to be_within(1.second).of(old_todo.deleted_at)
         expect(archived.archived_at).to be_within(5.seconds).of(Time.current)
       end
+
+      it "copies estimate date fields" do
+        old_todo_with_estimate = create(:todo, :soft_deleted, deleted_at: 31.days.ago,
+          estimate_start_at: Date.today - 10, estimate_end_at: Date.today - 5)
+
+        described_class.new(cutoff).call
+
+        archived = ArchivedTodo.find_by!(original_id: old_todo_with_estimate.id)
+        expect(archived.estimate_start_at).to eq(old_todo_with_estimate.estimate_start_at)
+        expect(archived.estimate_end_at).to eq(old_todo_with_estimate.estimate_end_at)
+      end
     end
 
     context "when todos are soft-deleted within the retention window" do

@@ -16,6 +16,16 @@ components:
           enum: [pending, in_progress, completed]
         userId:
           type: integer
+        estimateStartAt:
+          type: string
+          format: date
+          nullable: true
+          example: "2026-06-11"
+        estimateEndAt:
+          type: string
+          format: date
+          nullable: true
+          example: "2026-06-15"
         createdAt:
           type: string
           format: date-time

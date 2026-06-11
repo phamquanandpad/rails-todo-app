@@ -34,6 +34,17 @@ RSpec.describe "Todos", type: :request do
       expect(response.parsed_body["data"].all? { _1["status"] == "pending" }).to be true
     end
 
+    it "filters by overdue=true" do
+      overdue = create(:todo, user: user, estimate_end_at: Date.today - 1)
+      create(:todo, user: user, estimate_end_at: Date.today + 5)
+
+      get "/api/v1/todos?overdue=true", headers: user_headers, as: :json
+
+      expect(response).to have_http_status(:ok)
+      ids = response.parsed_body["data"].map { _1["id"] }
+      expect(ids).to include(overdue.id)
+    end
+
     it "requires authentication" do
       get "/api/v1/todos", as: :json
       expect(response).to have_http_status(:unauthorized)
@@ -106,6 +117,26 @@ RSpec.describe "Todos", type: :request do
       assert_schema_conform(201)
     end
 
+    it "creates a todo with estimate dates" do
+      post "/api/v1/todos",
+        params: { task: "Estimated task", estimate_start_at: "2026-06-11", estimate_end_at: "2026-06-15" },
+        headers: user_headers, as: :json
+
+      expect(response).to have_http_status(:created)
+      body = response.parsed_body
+      expect(body["estimateStartAt"]).to eq("2026-06-11")
+      expect(body["estimateEndAt"]).to eq("2026-06-15")
+      assert_schema_conform(201)
+    end
+
+    it "returns 422 when estimate_end_at is before estimate_start_at" do
+      post "/api/v1/todos",
+        params: { task: "Bad window", estimate_start_at: "2026-06-15", estimate_end_at: "2026-06-11" },
+        headers: user_headers, as: :json
+
+      expect(response).to have_http_status(:unprocessable_entity)
+    end
+
     it "fails with missing task" do
       post "/api/v1/todos",
         params: { task: "" },
@@ -127,6 +158,26 @@ RSpec.describe "Todos", type: :request do
       expect(response).to have_http_status(:ok)
       expect(response.parsed_body["task"]).to eq("Updated task")
       assert_schema_conform(200)
+    end
+
+    it "updates estimate dates" do
+      patch "/api/v1/todos/#{user_todo.id}",
+        params: { estimate_start_at: "2026-06-11", estimate_end_at: "2026-06-20" },
+        headers: user_headers, as: :json
+
+      expect(response).to have_http_status(:ok)
+      body = response.parsed_body
+      expect(body["estimateStartAt"]).to eq("2026-06-11")
+      expect(body["estimateEndAt"]).to eq("2026-06-20")
+      assert_schema_conform(200)
+    end
+
+    it "returns 422 when estimate window is invalid on update" do
+      patch "/api/v1/todos/#{user_todo.id}",
+        params: { estimate_start_at: "2026-06-20", estimate_end_at: "2026-06-11" },
+        headers: user_headers, as: :json
+
+      expect(response).to have_http_status(:unprocessable_entity)
     end
 
     it "returns 404 for another user's todo" do

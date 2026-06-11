@@ -60,6 +60,8 @@ components:
       $ref: '../components/parameters.yaml#/components/parameters/limit'
     status:
       $ref: '../components/parameters.yaml#/components/parameters/status'
+    overdue:
+      $ref: '../components/parameters.yaml#/components/parameters/overdue'
 
   responses:
     Unauthorized:

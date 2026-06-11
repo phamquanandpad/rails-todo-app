@@ -30,6 +30,8 @@ module Maintenance
         description:          todo.description,
         status:               Todo.statuses[todo.status],
         deleted_at:           todo.deleted_at,
+        estimate_start_at:    todo.estimate_start_at,
+        estimate_end_at:      todo.estimate_end_at,
         original_created_at:  todo.created_at,
         original_updated_at:  todo.updated_at,
         archived_at:          Time.current,

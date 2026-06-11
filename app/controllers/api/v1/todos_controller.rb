@@ -58,10 +58,10 @@ class Api::V1::TodosController < ApplicationController
   end
 
   def todo_params
-    params.permit(:task, :description, :status)
+    params.permit(:task, :description, :status, :estimate_start_at, :estimate_end_at)
   end
 
   def filter_params
-    params.permit(:status)
+    params.permit(:status, :overdue)
   end
 end
