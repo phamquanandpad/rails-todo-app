@@ -27,6 +27,12 @@ paths:
     $ref: '../paths/v1/todos/restore.yaml'
   /api/v1/users/{id}:
     $ref: '../paths/v1/users/show.yaml'
+  /api/v1/notifications:
+    $ref: '../paths/v1/notifications/index.yaml'
+  /api/v1/notifications/read_all:
+    $ref: '../paths/v1/notifications/read_all.yaml'
+  /api/v1/notifications/{id}/read:
+    $ref: '../paths/v1/notifications/read.yaml'
 
 components:
   securitySchemes:
@@ -40,6 +46,8 @@ components:
       $ref: '../components/schemas/todo.yaml#/components/schemas/Todo'
     User:
       $ref: '../components/schemas/user.yaml#/components/schemas/User'
+    Notification:
+      $ref: '../components/schemas/notification.yaml#/components/schemas/Notification'
     ErrorResponse:
       $ref: '../components/responses.yaml#/components/schemas/ErrorResponse'
     PaginationMeta:

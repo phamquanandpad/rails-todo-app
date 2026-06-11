@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
+  mount ActionCable.server => "/cable"
+
   namespace :api do
     namespace :v1 do
       scope :auth do
@@ -18,6 +20,15 @@ Rails.application.routes.draw do
         end
         member do
           patch :restore
+        end
+      end
+
+      resources :notifications, only: [:index] do
+        collection do
+          post :read_all
+        end
+        member do
+          patch :read
         end
       end
     end

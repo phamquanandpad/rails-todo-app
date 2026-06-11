@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_10_000002) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_11_022935) do
   create_table "archived_todos", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.datetime "archived_at", null: false
     t.datetime "created_at", null: false
@@ -25,7 +25,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_10_000002) do
     t.bigint "user_id", null: false
     t.index ["archived_at"], name: "index_archived_todos_on_archived_at"
     t.index ["original_id"], name: "index_archived_todos_on_original_id", unique: true
-    t.index ["user_id"], name: "index_archived_todos_on_user_id"
   end
 
   create_table "archived_users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -42,6 +41,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_10_000002) do
     t.string "username", null: false
     t.index ["archived_at"], name: "index_archived_users_on_archived_at"
     t.index ["original_id"], name: "index_archived_users_on_original_id", unique: true
+  end
+
+  create_table "notifications", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.text "body"
+    t.datetime "created_at", null: false
+    t.string "link"
+    t.datetime "read_at"
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id", "created_at"], name: "index_notifications_on_user_id_and_created_at"
+    t.index ["user_id", "read_at"], name: "index_notifications_on_user_id_and_read_at"
+    t.index ["user_id"], name: "index_notifications_on_user_id"
   end
 
   create_table "permissions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -99,6 +111,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_10_000002) do
     t.index ["role"], name: "index_users_on_role"
   end
 
+  add_foreign_key "notifications", "users"
   add_foreign_key "refresh_tokens", "users"
   add_foreign_key "todos", "users"
   add_foreign_key "user_permissions", "permissions"

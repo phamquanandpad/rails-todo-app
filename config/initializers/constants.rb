@@ -21,6 +21,9 @@ module AppConstants
         todos:complete
         todos:deleted
         todos:restore
+        notifications:index
+        notifications:read
+        notifications:read_all
       ].freeze,
       member: %w[
         todos:index
@@ -31,6 +34,9 @@ module AppConstants
         todos:complete
         todos:deleted
         todos:restore
+        notifications:index
+        notifications:read
+        notifications:read_all
       ].freeze
     }.freeze
 

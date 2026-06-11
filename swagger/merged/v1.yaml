@@ -441,6 +441,67 @@ paths:
           description: User deleted
         '401':
           $ref: '#/components/responses/Unauthorized'
+  /api/v1/notifications:
+    get:
+      summary: List notifications
+      operationId: get-notifications
+      tags:
+        - notification
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/limit'
+      responses:
+        '200':
+          description: Notifications listed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Notification'
+                  meta:
+                    $ref: '#/components/schemas/PaginationMeta'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /api/v1/notifications/read_all:
+    post:
+      summary: Mark all notifications as read
+      operationId: post-notifications-read-all
+      tags:
+        - notification
+      security:
+        - bearerAuth: []
+      responses:
+        '204':
+          description: All notifications marked as read
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /api/v1/notifications/{id}/read:
+    patch:
+      summary: Mark a notification as read
+      operationId: patch-notification-read
+      tags:
+        - notification
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Notification marked as read
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
 components:
   securitySchemes:
     bearerAuth:
@@ -506,6 +567,32 @@ components:
         - role
         - createdAt
         - updatedAt
+    Notification:
+      title: Notification
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        body:
+          type: string
+          nullable: true
+        link:
+          type: string
+          nullable: true
+          description: Client-side route to navigate to when notification is clicked
+          example: /todos/42
+        read:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - title
+        - read
+        - createdAt
     ErrorResponse:
       type: object
       properties:

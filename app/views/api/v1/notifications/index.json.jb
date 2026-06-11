@@ -1,0 +1,18 @@
+{
+  data: @notifications.map do |n|
+    {
+      id:        n.id,
+      title:     n.title,
+      body:      n.body,
+      link:      n.link,
+      read:      n.read?,
+      createdAt: n.created_at.iso8601
+    }
+  end,
+  meta: {
+    page:       @pagy.page,
+    limit:      @pagy.limit,
+    totalPages: @pagy.pages,
+    totalCount: @pagy.count
+  }
+}

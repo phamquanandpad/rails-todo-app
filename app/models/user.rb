@@ -5,6 +5,7 @@ class User < ApplicationRecord
   has_secure_password
   has_many :todos, dependent: :destroy, foreign_key: :user_id
   has_many :refresh_tokens, dependent: :destroy
+  has_many :notifications, dependent: :destroy
   has_many :user_permissions, dependent: :destroy
   has_many :permissions, through: :user_permissions
 

@@ -1,0 +1,11 @@
+post:
+  summary: Mark all notifications as read
+  operationId: post-notifications-read-all
+  tags: [notification]
+  security:
+    - bearerAuth: []
+  responses:
+    '204':
+      description: All notifications marked as read
+    '401':
+      $ref: '#/components/responses/Unauthorized'

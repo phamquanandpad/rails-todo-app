@@ -1,0 +1,25 @@
+get:
+  summary: List notifications
+  operationId: get-notifications
+  tags: [notification]
+  security:
+    - bearerAuth: []
+  parameters:
+    - $ref: '#/components/parameters/page'
+    - $ref: '#/components/parameters/limit'
+  responses:
+    '200':
+      description: Notifications listed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Notification'
+              meta:
+                $ref: '#/components/schemas/PaginationMeta'
+    '401':
+      $ref: '#/components/responses/Unauthorized'
