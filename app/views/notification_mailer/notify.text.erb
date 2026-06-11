@@ -1,0 +1,9 @@
+<%= @notification.title %>
+
+<% if @notification.body.present? -%>
+<%= @notification.body %>
+
+<% end -%>
+<% if @link_url -%>
+Open in Todo App: <%= @link_url %>
+<% end -%>

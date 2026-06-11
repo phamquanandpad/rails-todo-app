@@ -23,6 +23,18 @@ RSpec.describe Notifications::CreateService, type: :model do
         expect(NotificationsChannel).to receive(:broadcast_to).once
         Notifications::CreateService.call(user: user, title: "Hello")
       end
+
+      it "enqueues a NotificationMailer.notify job by default" do
+        expect {
+          Notifications::CreateService.call(user: user, title: "Hello")
+        }.to have_enqueued_mail(NotificationMailer, :notify).on_queue("mailers")
+      end
+
+      it "skips the email when send_email: false" do
+        expect {
+          Notifications::CreateService.call(user: user, title: "Hello", send_email: false)
+        }.not_to have_enqueued_mail(NotificationMailer, :notify)
+      end
     end
 
     context "with invalid params" do
@@ -36,6 +48,18 @@ RSpec.describe Notifications::CreateService, type: :model do
       it "does not broadcast on failure" do
         expect(NotificationsChannel).not_to receive(:broadcast_to)
         Notifications::CreateService.call(user: user, title: "")
+      end
+    end
+
+    context "when broadcast and mailer both raise" do
+      it "still creates the notification row and returns success" do
+        allow(NotificationsChannel).to receive(:broadcast_to).and_raise("boom")
+        allow(NotificationMailer).to receive(:notify).and_raise("boom")
+
+        result = Notifications::CreateService.call(user: user, title: "Hello")
+
+        expect(result).to be_success
+        expect(user.notifications.count).to eq(1)
       end
     end
   end

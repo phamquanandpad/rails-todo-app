@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_11_035945) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_11_063231) do
   create_table "archived_todos", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.datetime "archived_at", null: false
     t.datetime "created_at", null: false
@@ -48,11 +48,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_11_035945) do
   create_table "notifications", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.text "body"
     t.datetime "created_at", null: false
+    t.datetime "email_sent_at"
     t.string "link"
     t.datetime "read_at"
     t.string "title", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
+    t.index ["email_sent_at"], name: "index_notifications_on_email_sent_at"
     t.index ["user_id", "created_at"], name: "index_notifications_on_user_id_and_created_at"
     t.index ["user_id", "read_at"], name: "index_notifications_on_user_id_and_read_at"
     t.index ["user_id"], name: "index_notifications_on_user_id"

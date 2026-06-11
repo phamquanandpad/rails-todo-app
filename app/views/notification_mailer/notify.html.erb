@@ -1,0 +1,16 @@
+<h2><%= @notification.title %></h2>
+
+<% if @notification.body.present? %>
+  <p><%= @notification.body %></p>
+<% end %>
+
+<% if @link_url %>
+  <p>
+    <a href="<%= @link_url %>">Open in Todo App</a>
+  </p>
+<% end %>
+
+<hr>
+<p style="color:#888;font-size:12px">
+  You are receiving this because you have a Todo App account.
+</p>
