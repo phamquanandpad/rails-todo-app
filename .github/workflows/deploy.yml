@@ -23,7 +23,7 @@ jobs:
       with:
         context: .
         push: true
-        tags: ${{ secrets.DOCKER_USERNAME }}/your-app:latest
+        tags: ${{ secrets.DOCKER_USERNAME }}/todo-app:latest
 
     - name: Kích hoạt Deploy trên Render
       run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
