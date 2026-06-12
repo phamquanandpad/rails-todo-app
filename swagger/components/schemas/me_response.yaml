@@ -1,0 +1,22 @@
+components:
+  schemas:
+    MeResponse:
+      title: MeResponse
+      type: object
+      required: [id, username, email, role, permissions]
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+        role:
+          type: string
+          enum: [member, admin]
+        permissions:
+          type: array
+          items:
+            type: string
+          example: ["todos:index", "todos:create"]

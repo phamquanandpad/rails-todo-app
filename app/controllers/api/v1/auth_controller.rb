@@ -49,6 +49,11 @@ class Api::V1::AuthController < ApplicationController
     head :no_content
   end
 
+  def me
+    @user        = current_user
+    @permissions = current_user.permissions.pluck(:name)
+  end
+
   private
 
   def set_refresh_cookie(token)

@@ -28,5 +28,16 @@ FactoryBot.define do
         end
       end
     end
+
+    # Grants the full admin permission set
+    trait :with_admin_permissions do
+      role { :admin }
+      after(:create) do |user|
+        AppConstants::Roles::PERMISSIONS[:admin].each do |perm_name|
+          permission = Permission.find_or_create_by!(name: perm_name)
+          user.permissions << permission unless user.permissions.include?(permission)
+        end
+      end
+    end
   end
 end

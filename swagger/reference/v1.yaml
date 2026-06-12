@@ -17,6 +17,8 @@ paths:
     $ref: '../paths/v1/auth/refresh.yaml'
   /api/v1/auth/logout:
     $ref: '../paths/v1/auth/logout.yaml'
+  /api/v1/auth/me:
+    $ref: '../paths/v1/auth/me.yaml'
   /api/v1/todos:
     $ref: '../paths/v1/todos/index.yaml'
   /api/v1/todos/deleted:
@@ -50,6 +52,8 @@ components:
       $ref: '../components/schemas/user.yaml#/components/schemas/User'
     Notification:
       $ref: '../components/schemas/notification.yaml#/components/schemas/Notification'
+    MeResponse:
+      $ref: '../components/schemas/me_response.yaml#/components/schemas/MeResponse'
     ErrorResponse:
       $ref: '../components/responses.yaml#/components/schemas/ErrorResponse'
     PaginationMeta:
