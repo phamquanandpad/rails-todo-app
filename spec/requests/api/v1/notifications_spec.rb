@@ -94,4 +94,27 @@ RSpec.describe "Notifications", type: :request do
       expect(response).to have_http_status(:unauthorized)
     end
   end
+
+  describe "POST /api/v1/notifications/demo" do
+    it "creates a demo notification and returns 201" do
+      post "/api/v1/notifications/demo", headers: user_headers, as: :json
+
+      expect(response).to have_http_status(:created)
+      body = response.parsed_body
+      expect(body["title"]).to eq("🔔 Test notification")
+      expect(body["read"]).to be false
+      expect(body).to include("id", "createdAt")
+    end
+
+    it "persists the notification for the current user" do
+      expect {
+        post "/api/v1/notifications/demo", headers: user_headers, as: :json
+      }.to change { user.notifications.count }.by(1)
+    end
+
+    it "requires authentication" do
+      post "/api/v1/notifications/demo", as: :json
+      expect(response).to have_http_status(:unauthorized)
+    end
+  end
 end

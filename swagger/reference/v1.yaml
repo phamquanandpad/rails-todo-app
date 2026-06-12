@@ -31,6 +31,8 @@ paths:
     $ref: '../paths/v1/notifications/index.yaml'
   /api/v1/notifications/read_all:
     $ref: '../paths/v1/notifications/read_all.yaml'
+  /api/v1/notifications/demo:
+    $ref: '../paths/v1/notifications/demo.yaml'
   /api/v1/notifications/{id}/read:
     $ref: '../paths/v1/notifications/read.yaml'
 

@@ -1,0 +1,17 @@
+post:
+  summary: Send a demo notification to the current user
+  operationId: post-notifications-demo
+  tags: [notification]
+  security:
+    - bearerAuth: []
+  responses:
+    '201':
+      description: Demo notification created
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Notification'
+    '422':
+      $ref: '#/components/responses/UnprocessableEntity'
+    '401':
+      $ref: '#/components/responses/Unauthorized'
