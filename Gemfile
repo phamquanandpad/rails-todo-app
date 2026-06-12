@@ -68,4 +68,5 @@ end
 group :development do
   gem "ruby-lsp", "~> 0.26.9"
   gem "ruby-lsp-rspec", require: false
+  gem "bullet"
 end
