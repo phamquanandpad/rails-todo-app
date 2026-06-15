@@ -13,7 +13,7 @@ start_estimated_todos:
   description: "Transition pending todos to in_progress when estimateStart hits today"
 
 remind_overdue_todos:
-  cron: "0 11 * * *"
+  cron: "0 14 * * *"
   class: "RemindOverdueTodosJob"
   active_job: true
   queue: low
