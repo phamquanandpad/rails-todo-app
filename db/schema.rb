@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_11_063231) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_15_044751) do
   create_table "archived_todos", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.datetime "archived_at", null: false
     t.datetime "created_at", null: false
@@ -107,6 +107,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_11_063231) do
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.virtual "active_email", type: :string, as: "if((`deleted_at` is null),`email`,NULL)"
     t.datetime "created_at", null: false
     t.datetime "deleted_at"
     t.string "email", null: false
@@ -114,8 +115,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_11_063231) do
     t.integer "role", default: 0, null: false
     t.datetime "updated_at", null: false
     t.string "username", null: false
+    t.index ["active_email"], name: "index_users_on_active_email", unique: true
     t.index ["deleted_at"], name: "index_users_on_deleted_at"
-    t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["role"], name: "index_users_on_role"
   end
 
