@@ -1,0 +1,3 @@
+FROM quanphamandpad/todo-app:latest
+
+CMD ["bundle", "exec", "sidekiq"]

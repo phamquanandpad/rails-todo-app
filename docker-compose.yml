@@ -54,7 +54,7 @@ services:
     image: quanphamandpad/todo-app-sidekiq:latest
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.sidekiq
     command: bundle exec sidekiq
     environment:
       DATABASE_HOST: db
