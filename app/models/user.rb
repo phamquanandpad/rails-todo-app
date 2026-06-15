@@ -16,7 +16,7 @@ class User < ApplicationRecord
   scope :active, -> { where(deleted_at: nil) }
 
   validates :username, presence: true, length: { minimum: USERNAME_MIN_LENGTH, maximum: USERNAME_MAX_LENGTH }
-  validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
+  validates :email, presence: true, uniqueness: { conditions: -> { where(deleted_at: nil) } }, format: { with: URI::MailTo::EMAIL_REGEXP }
 
   def can?(permission_name)
     permissions.exists?(name: permission_name)
