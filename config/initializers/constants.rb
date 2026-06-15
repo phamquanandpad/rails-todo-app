@@ -26,6 +26,10 @@ module AppConstants
         notifications:read_all
       ].freeze,
       member: %w[
+        users:show
+        users:update
+        users:destroy
+
         todos:index
         todos:show
         todos:create
