@@ -27,6 +27,10 @@ paths:
     $ref: '../paths/v1/todos/show.yaml'
   /api/v1/todos/{id}/restore:
     $ref: '../paths/v1/todos/restore.yaml'
+  /api/v1/permissions:
+    $ref: '../paths/v1/permissions/index.yaml'
+  /api/v1/permissions/{id}:
+    $ref: '../paths/v1/permissions/show.yaml'
   /api/v1/users/{id}:
     $ref: '../paths/v1/users/show.yaml'
   /api/v1/notifications:
@@ -54,6 +58,8 @@ components:
       $ref: '../components/schemas/notification.yaml#/components/schemas/Notification'
     MeResponse:
       $ref: '../components/schemas/me_response.yaml#/components/schemas/MeResponse'
+    Permission:
+      $ref: '../components/schemas/permission.yaml#/components/schemas/Permission'
     ErrorResponse:
       $ref: '../components/responses.yaml#/components/schemas/ErrorResponse'
     PaginationMeta:
@@ -72,6 +78,8 @@ components:
   responses:
     Unauthorized:
       $ref: '../components/responses.yaml#/components/responses/Unauthorized'
+    Forbidden:
+      $ref: '../components/responses.yaml#/components/responses/Forbidden'
     NotFound:
       $ref: '../components/responses.yaml#/components/responses/NotFound'
     UnprocessableEntity:

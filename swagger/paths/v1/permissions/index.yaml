@@ -1,0 +1,67 @@
+get:
+  summary: List permissions
+  operationId: get-permissions
+  tags: [permission]
+  security:
+    - bearerAuth: []
+  parameters:
+    - name: q
+      in: query
+      description: Prefix search on permission name (e.g. "todos:" returns todos:create, todos:update, …)
+      schema:
+        type: string
+    - $ref: '#/components/parameters/page'
+    - $ref: '#/components/parameters/limit'
+  responses:
+    '200':
+      description: Permissions listed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Permission'
+              meta:
+                $ref: '#/components/schemas/PaginationMeta'
+    '401':
+      $ref: '#/components/responses/Unauthorized'
+    '403':
+      $ref: '#/components/responses/Forbidden'
+
+post:
+  summary: Create a permission
+  operationId: post-permissions
+  tags: [permission]
+  security:
+    - bearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+              example: "reports:export"
+              description: "Must match resource:action format"
+            description:
+              type: string
+              nullable: true
+          required: [name]
+  responses:
+    '201':
+      description: Permission created
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Permission'
+    '422':
+      $ref: '#/components/responses/UnprocessableEntity'
+    '401':
+      $ref: '#/components/responses/Unauthorized'
+    '403':
+      $ref: '#/components/responses/Forbidden'

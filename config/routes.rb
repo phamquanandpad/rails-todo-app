@@ -16,8 +16,8 @@ Rails.application.routes.draw do
       resources :permissions, only: [:index, :show, :create, :update, :destroy] do
         member do
           get    :users
-          post   'users/:user_id', action: :grant_user
-          delete 'users/:user_id', action: :revoke_user
+          post   "users/:user_id", action: :grant_user
+          delete "users/:user_id", action: :revoke_user
         end
       end
 

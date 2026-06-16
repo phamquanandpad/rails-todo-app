@@ -35,6 +35,13 @@ components:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
 
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
     UnprocessableEntity:
       description: Unprocessable Entity
       content:

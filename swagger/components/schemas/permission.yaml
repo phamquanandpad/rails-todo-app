@@ -1,0 +1,33 @@
+components:
+  schemas:
+    Permission:
+      title: Permission
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          example: "todos:create"
+        description:
+          type: string
+          nullable: true
+        builtin:
+          type: boolean
+          description: "True if defined in the server's Roles constant; cannot be deleted via the API"
+        roles:
+          type: array
+          items:
+            type: string
+            enum: [admin, member]
+          description: Roles that currently have at least one user granted this permission
+        usersCount:
+          type: integer
+          description: Number of users currently granted this permission
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required: [id, name, builtin, roles, usersCount, createdAt, updatedAt]
