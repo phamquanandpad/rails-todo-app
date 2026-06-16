@@ -13,7 +13,19 @@ Rails.application.routes.draw do
         get    "me",       to: "auth#me"
       end
 
-      resources :users, only: [:show, :update, :destroy]
+      resources :permissions, only: [:index, :show, :create, :update, :destroy] do
+        member do
+          get    :users
+          post   'users/:user_id', action: :grant_user
+          delete 'users/:user_id', action: :revoke_user
+        end
+      end
+
+      resources :users, only: [:index, :show, :update, :destroy] do
+        member do
+          patch :update_role
+        end
+      end
 
       resources :todos do
         collection do
