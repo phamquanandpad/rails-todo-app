@@ -1,0 +1,14 @@
+granted_ids = UserPermission
+  .where(permission_id: @permission.id, user_id: @users.map(&:id))
+  .pluck(:user_id)
+  .to_set
+
+{
+  data: @users.map { |user| render("permission_user", user:, granted_ids:) },
+  meta: {
+    page:       @pagy.page,
+    limit:      @pagy.limit,
+    totalPages: @pagy.pages,
+    totalCount: @pagy.count
+  }
+}

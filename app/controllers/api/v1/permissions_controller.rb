@@ -39,15 +39,29 @@ class Api::V1::PermissionsController < ApplicationController
   end
 
   def users
-    head :no_content  # temporary stub
+    scope = User.active.order(:username)
+    if params[:q].present?
+      q = ActiveRecord::Base.sanitize_sql_like(params[:q])
+      scope = scope.where("username LIKE ? OR email LIKE ?", "#{q}%", "#{q}%")
+    end
+    @pagy, @users = pagy(scope, limit: params[:limit] || 20)
   end
 
   def grant_user
-    head :no_content  # temporary stub
+    UserPermission.find_or_create_by!(
+      user_id: @permission_user.id,
+      permission_id: @permission.id
+    )
+    @permission_roles = permission_roles_map([@permission])
+    render :show, status: :created
   end
 
   def revoke_user
-    head :no_content  # temporary stub
+    UserPermission.where(
+      user_id: @permission_user.id,
+      permission_id: @permission.id
+    ).delete_all
+    head :no_content
   end
 
   private

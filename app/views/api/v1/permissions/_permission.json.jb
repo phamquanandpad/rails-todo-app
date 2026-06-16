@@ -1,0 +1,10 @@
+{
+  id:          permission.id,
+  name:        permission.name,
+  description: permission.description,
+  builtin:     AppConstants::Roles::ALL.include?(permission.name),
+  roles:       ((@permission_roles || {})[permission.id] || []).sort,
+  usersCount:  permission.user_permissions.size,
+  createdAt:   permission.created_at,
+  updatedAt:   permission.updated_at
+}

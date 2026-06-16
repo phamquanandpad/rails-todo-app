@@ -1,0 +1,7 @@
+{
+  id:      user.id,
+  username: user.username,
+  email:   user.email,
+  role:    user.role,
+  granted: granted_ids.include?(user.id)
+}

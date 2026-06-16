@@ -206,9 +206,36 @@ RSpec.describe "Permissions", type: :request do
   describe "GET /api/v1/permissions/:id/users" do
     let!(:permission) { Permission.find_or_create_by!(name: "todos:create") }
 
-    it "returns 200 for admin" do
+    it "returns paginated users with granted flag" do
       get "/api/v1/permissions/#{permission.id}/users", headers: admin_headers, as: :json
+
       expect(response).to have_http_status(:ok)
+      body = response.parsed_body
+      expect(body["data"]).to be_an(Array)
+      expect(body["meta"]).to include("page", "limit", "totalPages", "totalCount")
+      expect(body["data"].first).to include("id", "username", "email", "role", "granted")
+    end
+
+    it "marks the granted flag correctly" do
+      admin.permissions << permission unless admin.permissions.include?(permission)
+
+      get "/api/v1/permissions/#{permission.id}/users", headers: admin_headers, as: :json
+
+      users_data = response.parsed_body["data"]
+      admin_entry = users_data.find { _1["id"] == admin.id }
+      expect(admin_entry["granted"]).to be true
+
+      member_entry = users_data.find { _1["id"] == member.id }
+      expect(member_entry["granted"]).to be false unless member_entry.nil?
+    end
+
+    it "filters by username prefix with ?q=" do
+      get "/api/v1/permissions/#{permission.id}/users?q=#{admin.username[0..2]}",
+        headers: admin_headers, as: :json
+
+      expect(response).to have_http_status(:ok)
+      usernames = response.parsed_body["data"].map { _1["username"] }
+      expect(usernames).to all(start_with(admin.username[0..2]))
     end
 
     it "returns 403 for member" do
@@ -225,6 +252,23 @@ RSpec.describe "Permissions", type: :request do
   describe "POST /api/v1/permissions/:id/users/:user_id" do
     let!(:permission) { create(:permission, name: "reports:export") }
 
+    it "grants the permission to the user and returns 201" do
+      post "/api/v1/permissions/#{permission.id}/users/#{member.id}",
+        headers: admin_headers, as: :json
+
+      expect(response).to have_http_status(:created)
+      expect(member.reload.permissions).to include(permission)
+    end
+
+    it "is idempotent — granting twice returns 201 both times" do
+      member.permissions << permission
+      post "/api/v1/permissions/#{permission.id}/users/#{member.id}",
+        headers: admin_headers, as: :json
+
+      expect(response).to have_http_status(:created)
+      expect(member.permissions.where(id: permission.id).count).to eq(1)
+    end
+
     it "returns 403 for member" do
       post "/api/v1/permissions/#{permission.id}/users/#{member.id}",
         headers: member_headers, as: :json
@@ -239,6 +283,22 @@ RSpec.describe "Permissions", type: :request do
 
   describe "DELETE /api/v1/permissions/:id/users/:user_id" do
     let!(:permission) { create(:permission, name: "reports:export") }
+
+    it "revokes the permission from the user and returns 204" do
+      member.permissions << permission
+      delete "/api/v1/permissions/#{permission.id}/users/#{member.id}",
+        headers: admin_headers, as: :json
+
+      expect(response).to have_http_status(:no_content)
+      expect(member.reload.permissions).not_to include(permission)
+    end
+
+    it "is idempotent — revoking a user who doesn't have it returns 204" do
+      delete "/api/v1/permissions/#{permission.id}/users/#{member.id}",
+        headers: admin_headers, as: :json
+
+      expect(response).to have_http_status(:no_content)
+    end
 
     it "returns 403 for member" do
       delete "/api/v1/permissions/#{permission.id}/users/#{member.id}",

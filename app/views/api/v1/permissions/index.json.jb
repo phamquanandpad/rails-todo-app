@@ -1,0 +1,9 @@
+{
+  data: @permissions.map { |permission| render("permission", permission:) },
+  meta: {
+    page:       @pagy.page,
+    limit:      @pagy.limit,
+    totalPages: @pagy.pages,
+    totalCount: @pagy.count
+  }
+}
