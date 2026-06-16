@@ -25,6 +25,12 @@ module AppConstants
         notifications:index
         notifications:read
         notifications:read_all
+
+        permissions:index
+        permissions:show
+        permissions:create
+        permissions:update
+        permissions:destroy
       ].freeze,
       member: %w[
         users:show
