@@ -12,6 +12,7 @@ module AppConstants
         users:show
         users:update
         users:destroy
+        users:index
 
         todos:index
         todos:show
