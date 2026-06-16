@@ -27,7 +27,7 @@ gem "connection_pool", "~> 2.4"
 gem "bcrypt", "~> 3.1.7"
 
 # JWT for stateless authentication
-gem "jwt", "~> 2.8"
+gem "jwt", "~> 3.2"
 
 # Pagination
 gem "pagy", "~> 9.0"
