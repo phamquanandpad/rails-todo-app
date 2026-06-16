@@ -67,17 +67,16 @@ Rails.application.configure do
   # config.active_job.queue_adapter = :resque
   # config.active_job.queue_name_prefix = "todo_app_production"
 
-  # ActionMailer — deliver via Mailtrap Email Sending (production SMTP).
-  # Credentials stored in config/credentials/production.yml.enc.
+  # ActionMailer — Mailtrap sandbox (same as development, configured via ENV vars).
   config.action_mailer.perform_caching       = false
   config.action_mailer.perform_deliveries    = true
   config.action_mailer.raise_delivery_errors = false
   config.action_mailer.delivery_method       = :smtp
   config.action_mailer.smtp_settings = {
-    address:              Rails.application.credentials.dig(:mailtrap, :host),
-    port:                 (Rails.application.credentials.dig(:mailtrap, :port) || 587),
-    user_name:            Rails.application.credentials.dig(:mailtrap, :username),
-    password:             Rails.application.credentials.dig(:mailtrap, :password),
+    user_name:            ENV.fetch("MAILTRAP_USERNAME"),
+    password:             ENV.fetch("MAILTRAP_PASSWORD"),
+    address:              ENV.fetch("MAILTRAP_ADDRESS", "sandbox.smtp.mailtrap.io"),
+    port:                 ENV.fetch("MAILTRAP_PORT", "2525").to_i,
     authentication:       :plain,
     enable_starttls_auto: true
   }
