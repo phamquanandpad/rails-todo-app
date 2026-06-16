@@ -60,7 +60,7 @@ RSpec.describe "Users", type: :request do
   let(:admin_headers) { auth_headers(admin) }
 
   describe "GET /api/v1/users" do
-    let!(:other_user) { create(:user, :with_member_permissions) }
+    let!(:other_user) { create(:user, :with_member_permissions, username: "zyxunique") }
 
     it "returns paginated users for admin" do
       get "/api/v1/users", headers: admin_headers, as: :json
@@ -73,11 +73,12 @@ RSpec.describe "Users", type: :request do
     end
 
     it "filters by username prefix with ?q=" do
-      get "/api/v1/users?q=#{other_user.username[0..3]}", headers: admin_headers, as: :json
+      get "/api/v1/users?q=zyx", headers: admin_headers, as: :json
 
       expect(response).to have_http_status(:ok)
       usernames = response.parsed_body["data"].map { _1["username"] }
-      expect(usernames).to all(start_with(other_user.username[0..3]))
+      expect(usernames).to all(start_with("zyx"))
+      expect(usernames).to include("zyxunique")
     end
 
     it "returns 403 for member" do
