@@ -44,14 +44,23 @@ class Api::V1::PermissionsController < ApplicationController
       q = ActiveRecord::Base.sanitize_sql_like(params[:q])
       scope = scope.where("username LIKE ? OR email LIKE ?", "#{q}%", "#{q}%")
     end
-    @pagy, @users = pagy(scope, limit: params[:limit] || 20)
+    limit = params[:limit].to_i
+    limit = 20 if limit <= 0
+    limit = [limit, 100].min
+    @pagy, @users = pagy(scope, limit: limit)
   end
 
   def grant_user
-    UserPermission.find_or_create_by!(
-      user_id: @permission_user.id,
-      permission_id: @permission.id
-    )
+    attempts = 0
+    begin
+      UserPermission.find_or_create_by!(
+        user_id: @permission_user.id,
+        permission_id: @permission.id
+      )
+    rescue ActiveRecord::RecordNotUnique
+      retry if (attempts += 1) < 2
+      raise
+    end
     @permission_roles = permission_roles_map([@permission])
     render :show, status: :created
   end

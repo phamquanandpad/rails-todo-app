@@ -217,6 +217,7 @@ RSpec.describe "Permissions", type: :request do
     end
 
     it "marks the granted flag correctly" do
+      ungrantd_user = create(:user)
       admin.permissions << permission unless admin.permissions.include?(permission)
 
       get "/api/v1/permissions/#{permission.id}/users", headers: admin_headers, as: :json
@@ -225,8 +226,9 @@ RSpec.describe "Permissions", type: :request do
       admin_entry = users_data.find { _1["id"] == admin.id }
       expect(admin_entry["granted"]).to be true
 
-      member_entry = users_data.find { _1["id"] == member.id }
-      expect(member_entry["granted"]).to be false unless member_entry.nil?
+      ungranted_entry = users_data.find { _1["id"] == ungrantd_user.id }
+      expect(ungranted_entry).not_to be_nil, "ungranted user should appear on page 1"
+      expect(ungranted_entry["granted"]).to be false
     end
 
     it "filters by username prefix with ?q=" do
