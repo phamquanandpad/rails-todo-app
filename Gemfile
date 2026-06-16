@@ -16,7 +16,7 @@ gem "jb"
 gem "redis", ">= 4.0.1"
 
 # Background job processing with Sidekiq
-gem "sidekiq", "~> 7.0"
+gem "sidekiq", "~> 8.0"
 gem "sidekiq-cron", "~> 1.12"
 gem "connection_pool", "~> 2.4"
 
