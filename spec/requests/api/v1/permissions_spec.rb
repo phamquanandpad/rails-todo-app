@@ -221,4 +221,34 @@ RSpec.describe "Permissions", type: :request do
       expect(response).to have_http_status(:unauthorized)
     end
   end
+
+  describe "POST /api/v1/permissions/:id/users/:user_id" do
+    let!(:permission) { create(:permission, name: "reports:export") }
+
+    it "returns 403 for member" do
+      post "/api/v1/permissions/#{permission.id}/users/#{member.id}",
+        headers: member_headers, as: :json
+      expect(response).to have_http_status(:forbidden)
+    end
+
+    it "returns 401 without token" do
+      post "/api/v1/permissions/#{permission.id}/users/#{member.id}", as: :json
+      expect(response).to have_http_status(:unauthorized)
+    end
+  end
+
+  describe "DELETE /api/v1/permissions/:id/users/:user_id" do
+    let!(:permission) { create(:permission, name: "reports:export") }
+
+    it "returns 403 for member" do
+      delete "/api/v1/permissions/#{permission.id}/users/#{member.id}",
+        headers: member_headers, as: :json
+      expect(response).to have_http_status(:forbidden)
+    end
+
+    it "returns 401 without token" do
+      delete "/api/v1/permissions/#{permission.id}/users/#{member.id}", as: :json
+      expect(response).to have_http_status(:unauthorized)
+    end
+  end
 end
